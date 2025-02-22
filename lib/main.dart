@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-// 仮画面用
 import 'package:sampleorder/view/store/menu/menu_registration_screen.dart';
 import 'package:sampleorder/view/store/transaction/transaction_registration_screen.dart';
 import 'package:sampleorder/view/store/category/category_registration_screen.dart';
+import 'package:sampleorder/view/store/order/order_management_screen.dart';
 import 'package:sampleorder/view/store/common/common_drawer.dart';
 
 void main() {
@@ -20,28 +20,12 @@ class SampleOrderApp extends StatelessWidget {
       // ルーティング設定
       initialRoute: '/',
       routes: {
-        '/': (context) => HomeScreen(), // アプリ起動時の画面(仮ホーム)
-        '/menuRegistration': (context) => MenuRegistrationScreen(),
+        '/': (context) => OrderManagementScreen(),
         '/transactionRegistration': (context) =>
             TransactionRegistrationScreen(),
+        '/menuRegistration': (context) => MenuRegistrationScreen(),
         '/categoryRegistration': (context) => CategoryRegistrationScreen(),
       },
-    );
-  }
-}
-
-// アプリ起動直後に表示する仮のホーム画面
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("SampleOrder Home (仮)"),
-      ),
-      drawer: CommonDrawer(),
-      body: Center(
-        child: Text("ここは仮のトップ画面です。"),
-      ),
     );
   }
 }

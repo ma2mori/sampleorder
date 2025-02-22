@@ -15,12 +15,12 @@ class CommonDrawer extends StatelessWidget {
             ),
           ),
 
-          // メニュー登録へ
+          // 注文管理へ (Home相当)
           ListTile(
-            leading: Icon(Icons.restaurant_menu),
-            title: Text('メニュー登録(仮)'),
+            leading: Icon(Icons.shopping_cart),
+            title: Text('注文管理(仮)'),
             onTap: () {
-              Navigator.pushNamed(context, '/menuRegistration');
+              Navigator.pushNamed(context, '/');
             },
           ),
 
@@ -30,6 +30,15 @@ class CommonDrawer extends StatelessWidget {
             title: Text('取引登録(仮)'),
             onTap: () {
               Navigator.pushNamed(context, '/transactionRegistration');
+            },
+          ),
+
+          // メニュー登録へ
+          ListTile(
+            leading: Icon(Icons.restaurant_menu),
+            title: Text('メニュー登録(仮)'),
+            onTap: () {
+              Navigator.pushNamed(context, '/menuRegistration');
             },
           ),
 
