@@ -11,12 +11,18 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  provider: ^6.0.0  # 状態管理用、後のパートで利用
+  provider: ^6.0.0
+  hive: ^2.2.3          # Hive本体
+  hive_flutter: ^1.1.0  # Flutter向けHive拡張
+  path_provider: ^2.0.11 # Hiveの保存ディレクトリ取得用
+  uuid: ^4.4.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  hive_generator: ^1.1.3
+  build_runner: ^2.3.3
 
 flutter:
   uses-material-design: true
