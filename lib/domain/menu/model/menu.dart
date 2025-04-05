@@ -22,4 +22,6 @@ class MenuItem {
     required this.price,
     required this.categoryId,
   });
+
+  get key => null;
 }

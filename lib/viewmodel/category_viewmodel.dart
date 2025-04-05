@@ -1,29 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:sampleorder/data/category_repository.dart';
-import 'package:sampleorder/domain/category.dart';
+import 'package:sampleorder/domain/category/model/category.dart';
+import 'package:sampleorder/domain/category/usecase/get_categories_usecase.dart';
+import 'package:sampleorder/domain/category/usecase/add_category_usecase.dart';
+import 'package:sampleorder/domain/category/usecase/update_category_usecase.dart';
+import 'package:sampleorder/domain/category/usecase/delete_category_usecase.dart';
+import 'package:sampleorder/data/category/repository/category_repository_impl.dart';
 import 'package:uuid/uuid.dart';
 
 class CategoryViewModel extends ChangeNotifier {
-  final CategoryRepository _repository = CategoryRepository();
+  // ※ DI 導入前は簡易的に new で生成しています
+  final GetCategoriesUseCase _getCategoriesUseCase =
+      GetCategoriesUseCase(CategoryRepositoryImpl());
+  final AddCategoryUseCase _addCategoryUseCase =
+      AddCategoryUseCase(CategoryRepositoryImpl());
+  final UpdateCategoryUseCase _updateCategoryUseCase =
+      UpdateCategoryUseCase(CategoryRepositoryImpl());
+  final DeleteCategoryUseCase _deleteCategoryUseCase =
+      DeleteCategoryUseCase(CategoryRepositoryImpl());
+
   List<MenuCategory> categories = [];
 
   CategoryViewModel() {
-    _loadCategories();
+    fetchCategories();
   }
 
-  Future<void> _loadCategories() async {
-    categories = await _repository.getCategories();
+  Future<void> fetchCategories() async {
+    categories = await _getCategoriesUseCase();
     notifyListeners();
   }
 
-  Future<void> addCategory(String name) async {
-    final category = MenuCategory(id: Uuid().v4(), name: name);
-    await _repository.addCategory(category);
-    await _loadCategories();
+  Future<void> addCategory(String categoryName) async {
+    final newCategory = MenuCategory(id: Uuid().v4(), name: categoryName);
+    await _addCategoryUseCase(newCategory);
+    await fetchCategories();
   }
 
-  Future<void> deleteCategory(String id) async {
-    await _repository.deleteCategory(id);
-    await _loadCategories();
+  Future<void> editCategory(
+      MenuCategory category, String newCategoryName) async {
+    final updatedCategory =
+        MenuCategory(id: category.id, name: newCategoryName);
+    await _updateCategoryUseCase(updatedCategory);
+    await fetchCategories();
+  }
+
+  Future<void> deleteCategory(MenuCategory category) async {
+    await _deleteCategoryUseCase(category);
+    await fetchCategories();
   }
 }

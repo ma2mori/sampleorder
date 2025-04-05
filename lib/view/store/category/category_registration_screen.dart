@@ -50,7 +50,7 @@ class CategoryRegistrationScreen extends StatelessWidget {
                                 IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {
-                                    viewModel.deleteCategory(category.id);
+                                    viewModel.deleteCategory(category);
                                   },
                                   tooltip: '削除',
                                 ),

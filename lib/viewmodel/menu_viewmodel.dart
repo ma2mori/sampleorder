@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:sampleorder/data/menu_repository.dart';
-import 'package:sampleorder/domain/menu.dart';
+import 'package:sampleorder/domain/menu/model/menu.dart';
+import 'package:sampleorder/domain/menu/usecase/get_menu_items_usecase.dart';
+import 'package:sampleorder/domain/menu/usecase/add_menu_item_usecase.dart';
+import 'package:sampleorder/domain/menu/usecase/update_menu_item_usecase.dart';
+import 'package:sampleorder/domain/menu/usecase/delete_menu_item_usecase.dart';
+import 'package:sampleorder/data/menu/repository/menu_repository_impl.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 class MenuViewModel extends ChangeNotifier {
-  final MenuRepository _repository = MenuRepository();
+  final GetMenuItemsUseCase _getMenuItemsUseCase =
+      GetMenuItemsUseCase(MenuRepositoryImpl());
+  final AddMenuItemUseCase _addMenuItemUseCase =
+      AddMenuItemUseCase(MenuRepositoryImpl());
+  final UpdateMenuItemUseCase _updateMenuItemUseCase =
+      UpdateMenuItemUseCase(MenuRepositoryImpl());
+  final DeleteMenuItemUseCase _deleteMenuItemUseCase =
+      DeleteMenuItemUseCase(MenuRepositoryImpl());
+
   List<MenuItem> menuItems = [];
 
   MenuViewModel() {
-    _loadMenuItems();
+    fetchMenuItems();
   }
 
-  Future<void> _loadMenuItems() async {
-    menuItems = await _repository.getMenuItems();
+  Future<void> fetchMenuItems() async {
+    menuItems = await _getMenuItemsUseCase();
     notifyListeners();
   }
 
@@ -23,12 +36,28 @@ class MenuViewModel extends ChangeNotifier {
       price: price,
       categoryId: categoryId,
     );
-    await _repository.addMenuItem(item);
-    await _loadMenuItems();
+    await _addMenuItemUseCase(item);
+    await fetchMenuItems();
+  }
+
+  Future<void> updateMenuItem(MenuItem item) async {
+    await _updateMenuItemUseCase(item);
+    await fetchMenuItems();
   }
 
   Future<void> deleteMenuItem(String id) async {
-    await _repository.deleteMenuItem(id);
-    await _loadMenuItems();
+    final item = menuItems.firstWhereOrNull((m) => m.id == id);
+    if (item != null) {
+      await _deleteMenuItemUseCase(item);
+      await fetchMenuItems();
+    }
+  }
+
+  MenuItem? getMenuItemByKey(int key) {
+    return menuItems.firstWhereOrNull((item) => item.key == key);
+  }
+
+  MenuItem? getMenuItemById(String id) {
+    return menuItems.firstWhereOrNull((item) => item.id == id);
   }
 }
