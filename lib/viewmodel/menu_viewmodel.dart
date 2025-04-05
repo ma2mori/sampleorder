@@ -4,19 +4,17 @@ import 'package:sampleorder/domain/menu/usecase/get_menu_items_usecase.dart';
 import 'package:sampleorder/domain/menu/usecase/add_menu_item_usecase.dart';
 import 'package:sampleorder/domain/menu/usecase/update_menu_item_usecase.dart';
 import 'package:sampleorder/domain/menu/usecase/delete_menu_item_usecase.dart';
-import 'package:sampleorder/data/menu/repository/menu_repository_impl.dart';
+import 'package:sampleorder/di/service_locator.dart';
 import 'package:uuid/uuid.dart';
 import 'package:collection/collection.dart';
 
 class MenuViewModel extends ChangeNotifier {
-  final GetMenuItemsUseCase _getMenuItemsUseCase =
-      GetMenuItemsUseCase(MenuRepositoryImpl());
-  final AddMenuItemUseCase _addMenuItemUseCase =
-      AddMenuItemUseCase(MenuRepositoryImpl());
+  final GetMenuItemsUseCase _getMenuItemsUseCase = getIt<GetMenuItemsUseCase>();
+  final AddMenuItemUseCase _addMenuItemUseCase = getIt<AddMenuItemUseCase>();
   final UpdateMenuItemUseCase _updateMenuItemUseCase =
-      UpdateMenuItemUseCase(MenuRepositoryImpl());
+      getIt<UpdateMenuItemUseCase>();
   final DeleteMenuItemUseCase _deleteMenuItemUseCase =
-      DeleteMenuItemUseCase(MenuRepositoryImpl());
+      getIt<DeleteMenuItemUseCase>();
 
   List<MenuItem> menuItems = [];
 

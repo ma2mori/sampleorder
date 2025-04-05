@@ -15,6 +15,7 @@ import 'package:sampleorder/viewmodel/category_viewmodel.dart';
 import 'package:sampleorder/viewmodel/menu_viewmodel.dart';
 import 'package:sampleorder/viewmodel/transaction_viewmodel.dart';
 import 'package:sampleorder/viewmodel/order_viewmodel.dart';
+import 'package:sampleorder/di/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,10 +25,9 @@ void main() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
 
-  // 既存のカテゴリー・メニューアダプター登録
+  // アダプター登録
   Hive.registerAdapter(MenuCategoryAdapter());
   Hive.registerAdapter(MenuItemAdapter());
-  // 【追加】 取引・注文用のアダプター登録
   Hive.registerAdapter(TransactionAdapter());
   Hive.registerAdapter(OrderAdapter());
   Hive.registerAdapter(OrderItemAdapter());
@@ -39,13 +39,17 @@ void main() async {
   await Hive.openBox('transactions');
   await Hive.openBox('orders');
 
+  // サービスロケータ（get_it）の初期化
+  setupLocator();
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CategoryViewModel()),
-        ChangeNotifierProvider(create: (_) => MenuViewModel()),
-        ChangeNotifierProvider(create: (_) => TransactionViewModel()),
-        ChangeNotifierProvider(create: (_) => OrderViewModel()),
+        // get_it 経由に変更
+        ChangeNotifierProvider(create: (_) => getIt<CategoryViewModel>()),
+        ChangeNotifierProvider(create: (_) => getIt<MenuViewModel>()),
+        ChangeNotifierProvider(create: (_) => getIt<TransactionViewModel>()),
+        ChangeNotifierProvider(create: (_) => getIt<OrderViewModel>()),
       ],
       child: SampleOrderApp(),
     ),

@@ -4,19 +4,17 @@ import 'package:sampleorder/domain/category/usecase/get_categories_usecase.dart'
 import 'package:sampleorder/domain/category/usecase/add_category_usecase.dart';
 import 'package:sampleorder/domain/category/usecase/update_category_usecase.dart';
 import 'package:sampleorder/domain/category/usecase/delete_category_usecase.dart';
-import 'package:sampleorder/data/category/repository/category_repository_impl.dart';
+import 'package:sampleorder/di/service_locator.dart';
 import 'package:uuid/uuid.dart';
 
 class CategoryViewModel extends ChangeNotifier {
-  // ※ DI 導入前は簡易的に new で生成しています
   final GetCategoriesUseCase _getCategoriesUseCase =
-      GetCategoriesUseCase(CategoryRepositoryImpl());
-  final AddCategoryUseCase _addCategoryUseCase =
-      AddCategoryUseCase(CategoryRepositoryImpl());
+      getIt<GetCategoriesUseCase>();
+  final AddCategoryUseCase _addCategoryUseCase = getIt<AddCategoryUseCase>();
   final UpdateCategoryUseCase _updateCategoryUseCase =
-      UpdateCategoryUseCase(CategoryRepositoryImpl());
+      getIt<UpdateCategoryUseCase>();
   final DeleteCategoryUseCase _deleteCategoryUseCase =
-      DeleteCategoryUseCase(CategoryRepositoryImpl());
+      getIt<DeleteCategoryUseCase>();
 
   List<MenuCategory> categories = [];
 

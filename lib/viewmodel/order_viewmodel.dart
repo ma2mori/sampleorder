@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:sampleorder/data/order/repository/order_repository_impl.dart';
 import 'package:sampleorder/domain/order/model/order.dart';
 import 'package:sampleorder/domain/order/usecase/get_orders_usecase.dart';
 import 'package:sampleorder/domain/order/usecase/add_order_usecase.dart';
 import 'package:sampleorder/domain/order/usecase/update_order_usecase.dart';
 import 'package:sampleorder/domain/order/usecase/delete_order_usecase.dart';
+import 'package:sampleorder/di/service_locator.dart';
 
 class OrderViewModel extends ChangeNotifier {
-  final GetOrdersUseCase _getOrdersUseCase =
-      GetOrdersUseCase(OrderRepositoryImpl());
-  final AddOrderUseCase _addOrderUseCase =
-      AddOrderUseCase(OrderRepositoryImpl());
-  final UpdateOrderUseCase _updateOrderUseCase =
-      UpdateOrderUseCase(OrderRepositoryImpl());
-  final DeleteOrderUseCase _deleteOrderUseCase =
-      DeleteOrderUseCase(OrderRepositoryImpl());
+  final GetOrdersUseCase _getOrdersUseCase = getIt<GetOrdersUseCase>();
+  final AddOrderUseCase _addOrderUseCase = getIt<AddOrderUseCase>();
+  final UpdateOrderUseCase _updateOrderUseCase = getIt<UpdateOrderUseCase>();
+  final DeleteOrderUseCase _deleteOrderUseCase = getIt<DeleteOrderUseCase>();
 
   List<Order> orders = [];
 

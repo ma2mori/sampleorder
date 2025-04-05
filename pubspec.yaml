@@ -16,6 +16,7 @@ dependencies:
   hive_flutter: ^1.1.0  # Flutter向けHive拡張
   path_provider: ^2.0.11 # Hiveの保存ディレクトリ取得用
   uuid: ^4.4.2
+  get_it: ^7.2.0   # ← 追加
 
 dev_dependencies:
   flutter_test:
