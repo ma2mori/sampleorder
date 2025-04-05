@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sampleorder/view/store/common/common_drawer.dart';
 import 'package:sampleorder/domain/menu/model/menu.dart';
-import 'package:sampleorder/domain/order.dart';
+import 'package:sampleorder/domain/order/model/order.dart';
 import 'package:sampleorder/viewmodel/order_viewmodel.dart';
 import 'package:sampleorder/viewmodel/menu_viewmodel.dart';
 

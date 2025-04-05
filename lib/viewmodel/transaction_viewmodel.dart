@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:sampleorder/data/transaction_repository.dart';
-import 'package:sampleorder/domain/transaction.dart';
+import 'package:sampleorder/data/transaction/repository/transaction_repository_impl.dart';
+import 'package:sampleorder/domain/transaction/model/transaction.dart';
+import 'package:sampleorder/domain/transaction/usecase/get_transactions_usecase.dart';
+import 'package:sampleorder/domain/transaction/usecase/add_transaction_usecase.dart';
+import 'package:sampleorder/domain/transaction/usecase/update_transaction_usecase.dart';
 
 class TransactionViewModel extends ChangeNotifier {
-  final TransactionRepository _repository = TransactionRepository();
+  final GetTransactionsUseCase _getTransactionsUseCase =
+      GetTransactionsUseCase(TransactionRepositoryImpl());
+  final AddTransactionUseCase _addTransactionUseCase =
+      AddTransactionUseCase(TransactionRepositoryImpl());
+  final UpdateTransactionUseCase _updateTransactionUseCase =
+      UpdateTransactionUseCase(TransactionRepositoryImpl());
+
   List<Transaction> transactions = [];
 
   TransactionViewModel() {
@@ -11,17 +20,17 @@ class TransactionViewModel extends ChangeNotifier {
   }
 
   Future<void> loadTransactions() async {
-    transactions = await _repository.getTransactions();
+    transactions = await _getTransactionsUseCase();
     notifyListeners();
   }
 
   Future<void> addTransaction(Transaction transaction) async {
-    await _repository.addTransaction(transaction);
+    await _addTransactionUseCase(transaction);
     await loadTransactions();
   }
 
   Future<void> updateTransaction(Transaction transaction) async {
-    await _repository.updateTransaction(transaction);
+    await _updateTransactionUseCase(transaction);
     await loadTransactions();
   }
 }
